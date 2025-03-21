@@ -25,9 +25,7 @@
   },
   "overrides": {
     "react-scripts": {
-      "dependencies": {
-        "postcss": ">=8.4.31"
-      }
+      "postcss": ">=8.4.31"
     }
   },
   "scripts": {

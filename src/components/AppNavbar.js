@@ -92,7 +92,7 @@ function ResponsiveAppNavbar(props) {
               paddingLeft={1}
               sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
             >
-              Site Title1
+              Site Title
             </Typography>
           </Box>
           

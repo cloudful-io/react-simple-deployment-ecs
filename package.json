@@ -21,7 +21,14 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "react-scripts":"5.0.1"
+    "react-scripts": "^5.0.1"
+  },
+  "overrides": {
+    "react-scripts": {
+      "dependencies": {
+        "postcss": ">=8.4.31"
+      }
+    }
   },
   "scripts": {
     "start": "react-scripts start",

@@ -36,7 +36,7 @@ function ResponsiveAppNavbar(props) {
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, my: 2 }}>
             <HomeIcon/>
             <Typography variant="h6" sx={{ my: 2, lineHeight: 1 }}>
-                Site Title
+                {process.env.REACT_APP_SITE_TITLE}
             </Typography>
          </Box>
       <Divider />
@@ -77,8 +77,8 @@ function ResponsiveAppNavbar(props) {
                 component="div"
                 sx={{ flexGrow: 1, textAlign: 'center', display: { sm: 'none' } }}
             >
-            Site Title
-          </Typography>
+                {process.env.REACT_APP_SITE_TITLE}
+              </Typography>
           </Box>
           <Box
             component="a"
@@ -92,7 +92,8 @@ function ResponsiveAppNavbar(props) {
               paddingLeft={1}
               sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
             >
-              Site Title
+              {process.env.REACT_APP_SITE_TITLE}
+
             </Typography>
           </Box>
           

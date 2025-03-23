@@ -1,12 +1,13 @@
 module "s3-bucket" {
     source = "github.com/cloudful-io/terraform-aws-s3"
   
-    bucket_name             = "cloudful-react-deployment-s3"
-    static_website_hosting  = false
-    block_public_access     = true
-    create_kms_key          = false
-    create_logging_bucket   = false
-    logging_bucket_name     = "cloudful-logs"
+    bucket_name                   = "cloudful-react-deployment-s3"
+    static_website_hosting        = false
+    block_public_access           = true
+    create_kms_key                = false
+    enforce_encryption_in_transit = false
+    create_logging_bucket         = false
+    logging_bucket_name           = "cloudful-logs"
 }
 
 resource "aws_cloudfront_origin_access_control" "origin-access-control" {
@@ -23,7 +24,7 @@ resource "aws_cloudfront_distribution" "cloudfront-distribution" {
     origin_id   = "S3-${module.s3-bucket.id}"
     origin_access_control_id = aws_cloudfront_origin_access_control.origin-access-control.id
   }
-  
+
   default_root_object = "index.html"
   enabled = true
 
@@ -55,14 +56,14 @@ resource "aws_cloudfront_distribution" "cloudfront-distribution" {
 resource "aws_s3_bucket_policy" "bucket_policy" {
   bucket = module.s3-bucket.id
   policy = jsonencode({
-    Version = "2012-10-17",
+    Version = "2008-10-17",
     Statement = [
       {
         Sid       = "AllowCloudFrontServicePrincipal",
         Effect    = "Allow",
         Principal = { Service = "cloudfront.amazonaws.com" },
         Action    = "s3:GetObject",
-        Resource  = "arn:aws:s3:::${module.s3-bucket.id}/*"
+        Resource  = "${module.s3-bucket.arn}/*"
         Condition = {
           StringEquals = {
             "AWS:SourceArn" = aws_cloudfront_distribution.cloudfront-distribution.arn
@@ -90,7 +91,7 @@ resource "aws_iam_policy" "s3_cloudfront_policy" {
           "s3:PutObject", "s3:DeleteObject", "s3:ListBucket"
         ]
         Effect   = "Allow"
-        Resource = ["arn:aws:s3:::${module.s3-bucket.id}", "arn:aws:s3:::${module.s3-bucket.id}/*"]
+        Resource = ["${module.s3-bucket.arn}", "${module.s3-bucket.arn}/*"]
       },
       {
         Action = [

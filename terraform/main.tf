@@ -1,4 +1,4 @@
-module "s3-bucket" {
+module "s3-bucket" { 
     source = "github.com/cloudful-io/terraform-aws-s3"
   
     bucket_name                   = "cloudful-react-deployment-s3"

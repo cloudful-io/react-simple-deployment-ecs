@@ -9,7 +9,7 @@ output "cloudfront_distribution_id" {
 
 output "iam_access_key" {
   value     = aws_iam_access_key.github_deploy_key.id
-  sensitive = true
+  sensitive = true 
 }
 
 output "iam_secret_key" {

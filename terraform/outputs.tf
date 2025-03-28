@@ -15,4 +15,4 @@ output "iam_access_key" {
 output "iam_secret_key" {
   value     = aws_iam_access_key.github_deploy_key.secret
   sensitive = true
-}
+} 

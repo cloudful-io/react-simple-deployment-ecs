@@ -6,8 +6,7 @@ module "s3-bucket" {
     block_public_access           = true
     create_kms_key                = false
     enforce_encryption_in_transit = false
-    create_logging_bucket         = false
-    logging_bucket_name           = "cloudful-logs"
+    logging_bucket_name           = "cloudful-react-deployment-s3-logs"
 }
 
 resource "aws_cloudfront_origin_access_control" "origin-access-control" {

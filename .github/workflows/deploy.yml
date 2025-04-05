@@ -129,14 +129,14 @@ jobs:
             aws ecs create-service \
                 --cluster $CLUSTER_NAME \
                 --service-name $SERVICE_NAME \
-                --task-definition $TASK_DEFINITION_NAME \
+                --task-definition $TASK_NAME \
                 --desired-count 1 \
                 --launch-type FARGATE \
                 --network-configuration "awsvpcConfiguration={subnets=[$SUBNET_ID],securityGroups=[$SECURITY_GROUP_ID],assignPublicIp=ENABLED}"
         else
             echo "Service already exists."
         fi
-
+        
     # Force new ECS deployment to pull new image
     - name: Force new ECS deployment
       run: |

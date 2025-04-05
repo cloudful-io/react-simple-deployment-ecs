@@ -58,8 +58,17 @@ jobs:
     # Check if ECS cluster exists, create if not
     - name: Create ECS Cluster if not exists
       run: |
-        aws ecs describe-clusters --clusters $CLUSTER_NAME || \
-        aws ecs create-cluster --cluster-name $CLUSTER_NAME
+        EXISTS=$(aws ecs describe-clusters \
+        --clusters $CLUSTER_NAME \
+        --query "failures[?reason=='MISSING']" \
+        --output text)
+
+        if [[ -n "$EXISTS" ]]; then
+            echo "Cluster does not exist. Creating..."
+            aws ecs create-cluster --cluster-name $CLUSTER_NAME
+        else
+            echo "Cluster already exists."
+        fi
 
     - name: Create IAM task execution role if it doesn't exist
       run: |

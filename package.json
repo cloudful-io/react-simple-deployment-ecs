@@ -33,7 +33,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "npm run build && terraform -chdir=terraform/ apply -auto-approve && S3_BUCKET_NAME=$(terraform -chdir=terraform/ output -raw s3_bucket_name) && aws s3 sync ./build \"s3://$S3_BUCKET_NAME\" --delete && terraform -chdir=terraform/ output -raw cloudfront_distribution_url",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

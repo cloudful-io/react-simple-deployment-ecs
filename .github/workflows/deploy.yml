@@ -47,7 +47,7 @@ jobs:
     - name: Build Docker image
       run: |
         docker buildx create --use --platform linux/amd64 || true
-        docker buildx build --platform linux/amd64 -t $ECR_REPO:$IMAGE_TAG .
+        docker buildx build --platform linux/amd64 -t $ECR_REPO:$IMAGE_TAG --load .
 
     # Push the Docker image to ECR
     - name: Push Docker image to ECR

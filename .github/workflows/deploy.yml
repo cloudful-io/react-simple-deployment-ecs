@@ -118,14 +118,24 @@ jobs:
     # Create ECS Service if not exists
     - name: Create ECS Service if not exists
       run: |
-        aws ecs describe-services --cluster $CLUSTER_NAME --services $SERVICE_NAME || \
-        aws ecs create-service \
-          --cluster $CLUSTER_NAME \
-          --service-name $SERVICE_NAME \
-          --task-definition $TASK_NAME \
-          --desired-count 1 \
-          --launch-type FARGATE \
-          --network-configuration "awsvpcConfiguration={subnets=$SUBNET_ID,securityGroups=$SECURITYGROUP_ID,assignPublicIp=ENABLED}"
+        SERVICE_EXISTS=$(aws ecs describe-services \
+            --cluster $CLUSTER_NAME \
+            --services $SERVICE_NAME \
+            --query "failures[?reason=='MISSING']" \
+            --output text)
+
+        if [[ -n "$SERVICE_EXISTS" ]]; then
+            echo "Service does not exist. Creating..."
+            aws ecs create-service \
+                --cluster $CLUSTER_NAME \
+                --service-name $SERVICE_NAME \
+                --task-definition $TASK_DEFINITION_NAME \
+                --desired-count 1 \
+                --launch-type FARGATE \
+                --network-configuration "awsvpcConfiguration={subnets=[$SUBNET_ID],securityGroups=[$SECURITY_GROUP_ID],assignPublicIp=ENABLED}"
+        else
+            echo "Service already exists."
+        fi
 
     # Force new ECS deployment to pull new image
     - name: Force new ECS deployment

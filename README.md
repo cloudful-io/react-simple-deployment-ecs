@@ -101,6 +101,7 @@ The IAM user must have this minimum permission:
 
 ## Future Consideration
 - Include the ability to instantiate an Application Load Balancer (ALB) for production use
+- Separate devolopment and production branch with either separate ECS cluster, or service / task definition
 
 ## See Also
 - [react-deployment-s3](https://github.com/cloudful-io/react-deployment-s3): A ulta low-cost approach to host a client-side React.js application without a backend.

@@ -1,5 +1,5 @@
 # react-simple-deployment-ecs
-This repository serves as a template for a client-side React.js application that leverages [Material UI][https://mui.com/] as the front-end framework.  It contains a GitHub Action that will deploy to Amazon Web Services (AWS) Elastic Container Service (ECS).  The intent is to create an automated pipeline so that you can leverage a low-cost approach to host a React.js application.
+This repository serves as a template for a client-side React.js application that leverages [Material UI](https://mui.com/) as the front-end framework.  It contains a GitHub Action that will deploy to Amazon Web Services (AWS) Elastic Container Service (ECS).  The intent is to create an automated pipeline so that you can leverage a low-cost approach to host a React.js application.
 
 ## Usage
 
@@ -8,7 +8,7 @@ Once you instantiate your own Github repository from this template, run `npm ins
 | Variable | Description |
 |----------|-------------|
 | IMAGE_TAG | Tag name to use to label the image to use in Elastic Container Registry |
-| AWS_REGION | AWS region to deploy Elastic Container Service.  Allowable values for [AWS Region][https://docs.aws.amazon.com/global-infrastructure/latest/regions/aws-regions.html] |
+| AWS_REGION | AWS region to deploy Elastic Container Service.  Allowable values for [AWS Region](https://docs.aws.amazon.com/global-infrastructure/latest/regions/aws-regions.html) |
 | APP_NAME | Name of application |
 | CLUSTER_NAME | Name of Elastic Container Service (ECS) cluster to create, if it does not exist |
 | TASK_NAME | Name of ECS task definition to register to the ECS cluster |

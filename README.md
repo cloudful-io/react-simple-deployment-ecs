@@ -13,6 +13,8 @@ Once you instantiate your own Github repository from this template, run `npm ins
 | CLUSTER_NAME | Name of Elastic Container Service (ECS) cluster to create, if it does not exist |
 | TASK_NAME | Name of ECS task definition to register to the ECS cluster |
 | SERVICE_NAME | Name of ECS service to create, if it does not exist |
+| CPU | Amount of vCPU to associate with ECS task definition |
+| Memory | Amount of memory to associate with ECS task definition |
 
 In addition to environment variables, it also expects these repository or organization secrets to exist:
 

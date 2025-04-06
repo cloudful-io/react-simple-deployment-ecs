@@ -1,15 +1,99 @@
 # react-simple-deployment-ecs
-This repository serves as a template for a client-side React.js application that leverages [Material UI][https://mui.com/] as the front-end framework.  It contains a GitHub Action that will deploy to Amazon Web Services (AWS) Elastic Container Service (ECS).  The intent is to create an automated pipeline so that you can leverage a low-cost approach to host a client-side React.js application.
+This repository serves as a template for a client-side React.js application that leverages [Material UI][https://mui.com/] as the front-end framework.  It contains a GitHub Action that will deploy to Amazon Web Services (AWS) Elastic Container Service (ECS).  The intent is to create an automated pipeline so that you can leverage a low-cost approach to host a React.js application.
 
 ## Usage
 
-Once you instantiate your own Github repository from this template, run `npm install` to install all of the required dependencies in your development environment.  To test it locally, run `npm start` to launch the local development server at `http://localhost:3000`.  
+Once you instantiate your own Github repository from this template, run `npm install` to install all of the required dependencies in your development environment.  To test it locally, run `npm start` to launch the local development server at `http://localhost:3000`.  There is a number of environment variables that you need to set in the `.github/workflows/deploy.yml` file (lines 13-21):
 
- To use this template, it assumes that you have Terraform and the AWS CLI configured locally on your development environment and has the needed credentials:
+| Variable | Description |
+|----------|-------------|
+| IMAGE_TAG | Tag name to use to label the image to use in Elastic Container Registry |
+| AWS_REGION | AWS region to deploy Elastic Container Service.  Allowable values for [AWS Region][https://docs.aws.amazon.com/global-infrastructure/latest/regions/aws-regions.html] |
+| APP_NAME | Name of application |
+| CLUSTER_NAME | Name of Elastic Container Service (ECS) cluster to create, if it does not exist |
+| TASK_NAME | Name of ECS task definition to register to the ECS cluster |
+| SERVICE_NAME | Name of ECS service to create, if it does not exist |
 
-1. to provision the needed AWS resources by Terraform
-2) to deploy the React.js application build into the target S3 bucket
+In addition to environment variables, it also expects these repository or organization secrets to exist:
 
-You MUST change the name of the S3 bucket that the build will be deployed to in Line 4 of the `terraform/main.tf` file.  Since S3 server access logging is enabled for best security practice, you MUST also change the name of the S3 logging bucket in Line 9 of the `terraform/main.tf` file.  After that, you will be able to run the `npm run deploy` command.  One of the outputs of the Terraform module is the URL of the AWS CloudFront distribution, with which you can use to validate that the AWS infrastructure has been deployed correctly.
+| Secret | Description |
+| ------ | ----------- |
+| AWS_ACCESS_KEY_ID | Access key of an Identity Access Management (IAM) user |
+| AWS_SECRET_ACCESS_KEY | Secret key of an IAM user |
+| SECURITYGROUP_ID | ID of security group in which to associate for the ECS service |
+| SUBNET_ID | ID of subnet in which to associate for the ECS service |
+| AWS_ACCOUNT_ID | AWS account ID |
+
+The IAM user must have this minimum permission:
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "ECRPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "ecr:GetAuthorizationToken",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:CompleteLayerUpload",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:InitiateLayerUpload",
+                "ecr:PutImage",
+                "ecr:UploadLayerPart",
+                "ecr:CreateRepository",
+                "ecr:DescribeRepositories"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "ECSPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "ecs:CreateCluster",
+                "ecs:DescribeClusters",
+                "ecs:RegisterTaskDefinition",
+                "ecs:DescribeTaskDefinition",
+                "ecs:UpdateService",
+                "ecs:CreateService",
+                "ecs:DescribeServices"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "IAMRolePermissions",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateRole",
+                "iam:GetRole",
+                "iam:AttachRolePolicy",
+                "iam:PassRole"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "VPCPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeSubnets",
+                "ec2:DescribeSecurityGroups",
+                "ec2:DescribeVpcs",
+                "ec2:DescribeNetworkInterfaces"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "LogsPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
 
 Happy Coding!

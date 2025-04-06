@@ -19,6 +19,8 @@ jobs:
       SUBNET_ID: ${{ secrets.SUBNET_ID }}
       SECURITYGROUP_ID: ${{ secrets.SECURITYGROUP_ID }}
       ECR_REPO: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/react-app
+      CPU: 256
+      MEMORY: 512
 
     steps:
     # Checkout code
@@ -105,8 +107,8 @@ jobs:
           --family $TASK_NAME \
           --network-mode awsvpc \
           --requires-compatibilities FARGATE \
-          --cpu 256 \
-          --memory 512 \
+          --cpu $CPU \
+          --memory $MEMORY \
           --execution-role-arn arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole \
           --container-definitions '[{
             "name": "'$APP_NAME'",

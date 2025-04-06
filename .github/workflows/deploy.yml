@@ -36,6 +36,8 @@ jobs:
     # Login to Amazon ECR
     - name: Login to Amazon ECR
       uses: aws-actions/amazon-ecr-login@v1
+      with:
+        mask-password: true
 
     # Check if ECR Repo exists, create if not
     - name: Create ECR Repo if not exists

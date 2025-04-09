@@ -1,5 +1,5 @@
 # Stage 1: Build the React app
-FROM node:18-alpine AS build-stage
+FROM node:20-alpine AS build-stage
 
 # Set working directory
 WORKDIR /app
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Serve the app with Nginx
-FROM nginx:1.22.1-alpine AS prod-stage
+FROM nginx:1.27.4-alpine-slim AS prod-stage
 
 # Remove default Nginx static assets (optional but keeps image clean)
 RUN rm -rf /usr/share/nginx/html/*

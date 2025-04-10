@@ -31,14 +31,14 @@ on:
     branches: [ "main" ]
 
 env:
-  AWS_REGION: us-east-1                           # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: react-app                       # set this to your Amazon ECR repository name
-  ECS_SERVICE: react-app-service                  # set this to your Amazon ECS service name
-  ECS_CLUSTER: react-app-cluster                  # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: .aws/task-definition.json.template  # set this to the path to your Amazon ECS task definition
-                                                  # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME: react-app                       # set this to the name of the container in the
-                                                  # containerDefinitions section of your task definition
+  AWS_REGION: us-east-1                                     # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: react-app                                 # set this to your Amazon ECR repository name
+  ECS_SERVICE: react-app-service                            # set this to your Amazon ECS service name
+  ECS_CLUSTER: react-app-cluster                            # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: .aws/task-definition.json.template   # set this to the path to your Amazon ECS task definition
+                                                            # template file, e.g. .aws/task-definition.json
+  CONTAINER_NAME: react-app                                 # set this to the name of the container in the
+                                                            # containerDefinitions section of your task definition
   SUBNET_ID: ${{ secrets.SUBNET_ID }}
   SECURITYGROUP_ID: ${{ secrets.SECURITYGROUP_ID }}
 
@@ -56,7 +56,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -92,7 +92,7 @@ jobs:
         image: ${{ steps.build-image.outputs.image }}
 
     - name: Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v2
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
         service: ${{ env.ECS_SERVICE }}
